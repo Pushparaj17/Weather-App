@@ -12,6 +12,7 @@ import com.pushparaj.samples.weatherapp.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,9 +25,9 @@ class WeatherViewModel @Inject constructor(private val app:Application, private 
 
     init {
         val sharedPreferences = getApplication<Application>().getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
-        val city: String? = sharedPreferences.getString(Constants.SEARCH_CITY_NAME, "")
+        val city: String? = sharedPreferences.getString(Constants.SEARCH_CITY_NAME, null)
         editor = sharedPreferences.edit()
-        getWeather(city?:"")
+        getWeather(city?: Constants.DEFAULT_CITTY)
     }
 
     fun getWeather(city: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -36,13 +37,12 @@ class WeatherViewModel @Inject constructor(private val app:Application, private 
                 editor.putString(Constants.SEARCH_CITY_NAME, city)
                 editor.apply()
             } else {
-                Log.d("ViewModel", "Error Code : ${response.errorBody()}")
-                Toast.makeText(getApplication<Application>().applicationContext, "Please enter valid city name", Toast.LENGTH_LONG).show()
+                Log.d("ViewModel", "Error : ${response.errorBody()}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(getApplication<Application>().applicationContext, "Please enter valid city name", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
 
-    private fun updatePreference(city: String) {
-
-    }
 }

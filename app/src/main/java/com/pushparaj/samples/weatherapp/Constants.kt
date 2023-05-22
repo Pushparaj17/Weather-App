@@ -6,4 +6,5 @@ object Constants {
     const val IMAGE_URL = "https://openweathermap.org/img/wn/"
     const val SHARED_PREFERENCE_NAME= "CityName"
     const val SEARCH_CITY_NAME= "SearchCityName"
+    const val DEFAULT_CITTY = "Plano"
 }
