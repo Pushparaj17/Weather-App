@@ -3,6 +3,7 @@ package com.pushparaj.samples.weatherapp
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.filters.LargeTest
@@ -36,5 +37,10 @@ class MainActivityTest {
     @Test
     fun test_tvDescription_visibleOnLaunch() {
         onView(withId(R.id.tvDescription)).check(matches(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
+    fun test_pBLoading_inVisibleOnLaunch() {
+        onView(withId(R.id.pBLoading)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
 }
