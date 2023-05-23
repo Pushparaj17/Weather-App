@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                             "%.1f",
                             convertToCelcius(viewState.weatherResponse.main.temp.toDouble())
                         ) + "\u00B0" + " C"
-                        tvFeelsLike.text = getString(R.string.feels_like) + String.format(
+                        tvFeelsLike.text = getString(R.string.feels_like) + " " + String.format(
                             "%.1f",
                             convertToCelcius(viewState.weatherResponse.main.feels_like.toDouble())
                         ) + "\u00B0" + " C"
