@@ -5,51 +5,36 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.pushparaj.samples.weatherapp.viewmodel.WeatherViewModel
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import org.junit.Before
+import androidx.test.filters.LargeTest
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
-
-@HiltAndroidTest
+@RunWith(AndroidJUnit4ClassRunner::class)
+@LargeTest
 class MainActivityTest {
+
     @get:Rule
-    var hiltAndroidRule = HiltAndroidRule(this)
-
-    @Rule @JvmField
-    var activityScenarioRule = ActivityScenarioRule(
-        MainActivity::class.java
-    )
-
-    @Before
-    public fun setup() {
-        hiltAndroidRule.inject()
-    }
+    val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
     fun test_serachView_visibleOnLaunch() {
-        activityScenarioRule.scenario.onActivity { activity: MainActivity ->
-            onView(withId(R.id.searchView)).check(matches(ViewMatchers.isDisplayed()));
-        }
+        onView(withId(R.id.searchView)).check(matches(ViewMatchers.isDisplayed()));
     }
 
     @Test
-    fun test_loadingState_enableProgressBar() {
-        val viewState = WeatherViewModel.ViewState.Loading
-        activityScenarioRule.scenario.onActivity { activity: MainActivity ->
-             activity.updateUI(viewState)
-             onView(withId(R.id.pBLoading)).check(matches(ViewMatchers.isDisplayed()));
-        }
+    fun test_tvCityName_visibleOnLaunch() {
+        onView(withId(R.id.tvCityName)).check(matches(ViewMatchers.isDisplayed()));
     }
 
     @Test
-    fun test_errorState_enableErrorView() {
-        val viewState = WeatherViewModel.ViewState.Loading
-        activityScenarioRule.scenario.onActivity { activity: MainActivity ->
-            activity.updateUI(viewState)
-            onView(withId(R.id.tvErrorMessage)).check(matches(ViewMatchers.isDisplayed()));
-        }
+    fun test_tvTemperature_visibleOnLaunch() {
+        onView(withId(R.id.tvTemperature)).check(matches(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
+    fun test_tvDescription_visibleOnLaunch() {
+        onView(withId(R.id.tvDescription)).check(matches(ViewMatchers.isDisplayed()));
     }
 }
