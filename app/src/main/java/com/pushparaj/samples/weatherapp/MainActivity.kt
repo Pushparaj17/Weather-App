@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: WeatherViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,12 +31,25 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
-        viewModel.viewState.observe(this, { viewState ->
+        viewModel.viewState.observe(this) { viewState ->
             updateUI(viewState)
-        })
+        }
+
+        /*if (ContextCompat.checkSelfPermission(this@MainActivity,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) !==
+            PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            } else {
+                ActivityCompat.requestPermissions(this@MainActivity,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            }
+        }*/
     }
 
-    public fun updateUI(viewState: WeatherViewModel.ViewState) {
+    private fun updateUI(viewState: WeatherViewModel.ViewState) {
         binding.apply {
             when (viewState) {
                 is WeatherViewModel.ViewState.Loading -> {
@@ -72,8 +86,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun convertToCelcius(temp: Double): Double {
         return temp - 273.15
     }
+
+    /*override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    if ((ContextCompat.checkSelfPermission(this@MainActivity,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION) ===
+                                PackageManager.PERMISSION_GRANTED)) {
+                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+        }
+    }*/
+
 
 }
