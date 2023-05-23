@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Weather App</string>
+    <string name="search_hint">Enter the city name here</string>
+    <string name="error_message">Please enter the valid city name</string>
+    <string name="feels_like">Feels like</string>
 </resources>
