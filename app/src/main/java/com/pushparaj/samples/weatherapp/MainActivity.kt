@@ -1,17 +1,26 @@
 package com.pushparaj.samples.weatherapp
 
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.pushparaj.samples.weatherapp.databinding.ActivityMainBinding
 import com.pushparaj.samples.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    //private val LOCATION_PERMISSION_REQ_CODE = 1000;
+
+    //private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: WeatherViewModel by viewModels()
@@ -20,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        /** This is required for finding current location **/
+        //fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        //getCurrentLocation()
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -34,19 +47,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.viewState.observe(this) { viewState ->
             updateUI(viewState)
         }
-
-        /*if (ContextCompat.checkSelfPermission(this@MainActivity,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) !==
-            PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            } else {
-                ActivityCompat.requestPermissions(this@MainActivity,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            }
-        }*/
     }
 
     private fun updateUI(viewState: WeatherViewModel.ViewState) {
@@ -91,25 +91,43 @@ class MainActivity : AppCompatActivity() {
         return temp - 273.15
     }
 
-    /*override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
+    /*private fun getCurrentLocation() {
+        // checking location permission
+        if (ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // request permission
+            ActivityCompat.requestPermissions(this,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQ_CODE);
+            return
+        }
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener {
+                val latitude = it.latitude
+                val longitude = it.longitude
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed on getting current location",
+                    Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            1 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED) {
-                    if ((ContextCompat.checkSelfPermission(this@MainActivity,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION) ===
-                                PackageManager.PERMISSION_GRANTED)) {
-                        Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-                    }
+            LOCATION_PERMISSION_REQ_CODE -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted
                 } else {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                    // permission denied
+                    Toast.makeText(this, "You need to grant permission to access location",
+                        Toast.LENGTH_SHORT).show()
                 }
-                return
             }
         }
     }*/
-
 
 }

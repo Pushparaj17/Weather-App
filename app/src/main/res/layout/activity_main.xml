@@ -14,6 +14,8 @@
         android:layout_height="wrap_content"
         android:queryHint="@string/search_hint"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/searchview_background"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
@@ -29,9 +31,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/red"
-            android:textStyle="bold"
             android:visibility="gone"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
         <TextView
             android:id="@+id/tvCityName"
             android:layout_width="match_parent"
